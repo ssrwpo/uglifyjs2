@@ -20,8 +20,8 @@ Meteor's standard minifier skip minification while in development. As dead code
 removal could affect your project's behavior, this package allows you to minify
 your code while developping.
 
-In your `package.json`, add the following option to activate minification while
-in development mode:
+In your `package.json`, add the `development` option to activate minification
+while in development mode:
 ```json
 "uglifyjs2": {
   ...

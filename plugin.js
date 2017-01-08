@@ -9,6 +9,7 @@ const manifestFileName = './package.json';
 
 class UglifyJSMinifier {
   constructor() {
+    this.forceDevelopmentMinification = false;
     this.minifyOptions = {
       /* eslint-disable camelcase */
       fromString: true,
@@ -40,9 +41,15 @@ class UglifyJSMinifier {
       /* eslint-enable */
     };
     this.deadCodes = ['Meteor.isServer'];
+    // Analyse user's package.json for package options
     if (fs.lstatSync(manifestFileName).isFile()) {
-      const manifest = fs.readFileSync(manifestFileName, 'utf8');
+      const manifest = JSON.parse(fs.readFileSync(manifestFileName, 'utf8'));
+      if (manifest.uglifyjs2) {
+        const { development } = manifest.uglifyjs2;
+        this.forceDevelopmentMinification = development || false;
+      }
     }
+    this.processFilesForBundle = this.processFilesForBundle.bind(this);
   }
   minify(content) {
     const pattern = new RegExp(this.deadCodes.join('|'), 'g');
@@ -57,11 +64,15 @@ class UglifyJSMinifier {
   processFilesForBundle(files, options) {
     Plugin.nudge();
     const mode = options.minifyMode;
-    // Don't minify anything for development
+    // Don't minify anything for development except if forced
     if (mode === 'development') {
-      files.forEach(function (file) {
+      files.forEach((file) => {
+        const data = this.forceDevelopmentMinification &&
+        !(/\.min\.js$/.test(file.getPathInBundle()))
+          ? this.minify(file.getContentsAsString())
+          : file.getContentsAsBuffer();
         file.addJavaScript({
-          data: file.getContentsAsBuffer(),
+          data,
           sourceMap: file.getSourceMap(),
           path: file.getPathInBundle()
         });
