@@ -34,7 +34,7 @@ class UglifyJSMinifier {
         drop_console: true,
         keep_fargs: false,
         keep_fnames: false,
-        passes: 2,
+        passes: 1,
         global_defs: {
           UGLYFYJS_DEAD: false,
         },
@@ -69,7 +69,6 @@ class UglifyJSMinifier {
     return '';
   }
   processFilesForBundle(files, options) {
-    // Plugin.nudge();
     const mode = options.minifyMode;
     // Don't minify anything for development except if forced
     if (mode === 'development') {
@@ -83,6 +82,7 @@ class UglifyJSMinifier {
           sourceMap: file.getSourceMap(),
           path: file.getPathInBundle()
         });
+        Plugin.nudge();
       });
       return;
     }
@@ -96,14 +96,14 @@ class UglifyJSMinifier {
       if (/\.min\.js$/.test(file.getPathInBundle())) {
         allMinifiedJs += file.getContentsAsString();
       } else {
-        allUnminifiedJs += file.getContentsAsString();
+        allUnminifiedJs += this.minify(file.getContentsAsString());
       }
+      Plugin.nudge();
     });
-    const data = allMinifiedJs + this.minify(allUnminifiedJs);
+    const data = allMinifiedJs + allUnminifiedJs;
     if (data.length) {
       files[0].addJavaScript({ data });
     }
-    // Plugin.nudge();
   }
 }
 
