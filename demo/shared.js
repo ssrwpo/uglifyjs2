@@ -2,6 +2,10 @@ import { Meteor } from 'meteor/meteor';
 
 if (Meteor.isClient) {
   console.log('Client is called');
+  if (ALERT) {
+    // eslint-disable-next-line no-alert
+    alert('Annoying alert');
+  }
 }
 
 if (Meteor.isServer) {

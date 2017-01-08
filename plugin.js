@@ -3,9 +3,10 @@
 import fs from 'fs';
 import { Meteor } from 'meteor/meteor';
 
+// Package's name
 export const name = 'ssrwpo:uglifyjs2';
 
-const manifestFileName = './package.json';
+const npmManifestFileName = './package.json';
 
 class UglifyJSMinifier {
   constructor() {
@@ -42,11 +43,14 @@ class UglifyJSMinifier {
     };
     this.deadCodes = ['Meteor.isServer'];
     // Analyse user's package.json for package options
-    if (fs.lstatSync(manifestFileName).isFile()) {
-      const manifest = JSON.parse(fs.readFileSync(manifestFileName, 'utf8'));
-      if (manifest.uglifyjs2) {
-        const { development } = manifest.uglifyjs2;
+    if (fs.lstatSync(npmManifestFileName).isFile()) {
+      const npmManifest = JSON.parse(fs.readFileSync(npmManifestFileName, 'utf8'));
+      if (npmManifest.uglifyjs2) {
+        const { development, deadCodes } = npmManifest.uglifyjs2;
         this.forceDevelopmentMinification = development || false;
+        if (deadCodes) {
+          this.deadCodes = deadCodes;
+        }
       }
     }
     this.processFilesForBundle = this.processFilesForBundle.bind(this);

@@ -13,6 +13,7 @@
   "author": "Pierre-Eric Marchandet <pemarchandet@gmail.com> (http://pem-musing.blogspot.fr/)",
   "license": "MIT",
   "uglifyjs2": {
+    "deadCodes": ["Meteor.isServer", "ALERT"],
     "development": true
   }
 }
