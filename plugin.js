@@ -69,7 +69,7 @@ class UglifyJSMinifier {
     return '';
   }
   processFilesForBundle(files, options) {
-    Plugin.nudge();
+    // Plugin.nudge();
     const mode = options.minifyMode;
     // Don't minify anything for development except if forced
     if (mode === 'development') {
@@ -103,7 +103,7 @@ class UglifyJSMinifier {
     if (data.length) {
       files[0].addJavaScript({ data });
     }
-    Plugin.nudge();
+    // Plugin.nudge();
   }
 }
 
