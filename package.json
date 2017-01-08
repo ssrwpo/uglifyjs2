@@ -1,0 +1,11 @@
+{
+  "name": "ssrwpo:uglifyjs2",
+  "version": "1.0.0",
+  "author": "Pierre-Eric Marchandet <pemarchandet@gmail.com> (http://pem-musing.blogspot.fr/)",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.12.2"
+  }
+}

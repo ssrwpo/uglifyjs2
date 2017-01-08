@@ -1,0 +1,7 @@
+/.idea/*
+/node_modules
+.DS_Store
+**/*.log
+/.meteor/dev_bundle
+/.meteor/local
+dump
