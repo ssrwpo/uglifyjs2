@@ -49,13 +49,42 @@ uglifyjs2: {
 ```
 
 ### Dead code elimination
-A list of `String`s is used for text replacement as a global definition
+`deadCodes` is a list of `String`s is used for text replacement as a global definition
 transformed into `UGLYFYJS_DEAD` allowing minifications with dead code removal.
 This acts as macro for code removal in your project.
+
+In your `package.json`, add the `deadCodes` option to additional dead code removals:
+```json
+"uglifyjs2": {
+  ...
+  "deadCodes": ["Meteor.isServer", ...],
+  ...
+}
+```
 
 By default, the list only contains: `['Meteor.isServer']`.
 
 ### UglifyJS2 options
+Overwrite the default `options` to add or remove UglifyJS2's options.
+
+In your `package.json`, add the `options` for tweaking UglifyJS2's options:
+```json
+"uglifyjs2": {
+  ...
+  "options": {
+    "fromString": true,
+    "compress": {
+      ...
+      "properties": false,
+      ...
+    }
+  }
+  ...
+}
+```
+
+> :warning: Meteor relies on text analysis when using UglifyJS2. Therefore,
+  removing the `fromString` option leads to unexpected results.
 
 ### Development minification
 Meteor's standard minifier skip minification while in development. As dead code
@@ -75,6 +104,7 @@ while in development mode:
 ## Tips
 * Start with a small project when choosing your options.
 * Don't add `reduce_vars` as option as it prevents Meteor from starting.
+* Use the default options as a canevas for experimenting additional UglifyJS2 options.
 
 ## Links
 * [UglifyJS2](https://github.com/mishoo/UglifyJS2)

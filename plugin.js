@@ -46,10 +46,14 @@ class UglifyJSMinifier {
     if (fs.lstatSync(npmManifestFileName).isFile()) {
       const npmManifest = JSON.parse(fs.readFileSync(npmManifestFileName, 'utf8'));
       if (npmManifest.uglifyjs2) {
-        const { development, deadCodes } = npmManifest.uglifyjs2;
+        const { development, deadCodes, options } = npmManifest.uglifyjs2;
         this.forceDevelopmentMinification = development || false;
         if (deadCodes) {
           this.deadCodes = deadCodes;
+        }
+        if (options) {
+          this.minifyOptions = Object.assign(this.minifyOptions, options);
+          console.log('this.minifyOptions', this.minifyOptions);
         }
       }
     }
