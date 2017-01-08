@@ -53,7 +53,6 @@ class UglifyJSMinifier {
         }
         if (options) {
           this.minifyOptions = Object.assign(this.minifyOptions, options);
-          console.log('this.minifyOptions', this.minifyOptions);
         }
       }
     }
