@@ -14,7 +14,7 @@ meteor add ssrwpo:uglifyjs2
 ## Configuration
 ### Default options
 The following default options are activated:
-```
+```js
 uglifyjs2: {
   deadCodes: ['Meteor.isServer'],
   options: {
