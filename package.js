@@ -3,7 +3,7 @@
 const name = 'ssrwpo:uglifyjs2';
 Package.describe({
   name,
-  version: '0.1.0',
+  version: '0.2.0',
   summary: 'Meteor package that exposes options for UglifyJS2 JS minifier',
   git: 'https://github.com/ssr-server/uglifyjs2',
   documentation: 'README.md'
@@ -16,12 +16,12 @@ Package.registerBuildPlugin({
   sources: ['plugin.js']
 });
 
-Package.onUse(function(api) {
+Package.onUse((api) => {
   api.versionsFrom('1.4.2.3');
   api.use(pkgs, 'server');
 });
 
-Package.onTest(function(api) {
+Package.onTest((api) => {
   api.use(pkgs.concat(['tinytest', name]), 'server');
   api.mainModule('uglifyjs2-tests.js');
 });
