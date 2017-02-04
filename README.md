@@ -17,6 +17,11 @@ The following default options are activated:
 ```js
 uglifyjs2: {
   deadCodes: ['Meteor.isServer'],
+  fileRemoval: [
+    'packages/ddp-server.js',
+    'packages/shell-server.js',
+    'packages/ssrwpo_uglifyjs2.js'
+  ],
   packageDebug: false,
   options: {
     fromString: true,
@@ -111,6 +116,25 @@ For activating it, simply add the `packageDebug` option in your `package.json`.
 "uglifyjs2": {
   ...
   "packageDebug": true,
+  ...
+}
+```
+
+### File removals
+Meteor injects files in the client that doesn't belong to the client. This is
+used by Meteor to display informations on used packages in the server. Removing
+these informations increase security and removes some unecessary lost bytes.
+
+Some defaults files are removed automatically with this package and you can
+tweak these removals using `fileRemoval` options in your `package.json`.
+```json
+"uglifyjs2": {
+  ...
+  "fileRemoval": [
+    "packages/ddp-server.js",
+    "packages/shell-server.js",
+    "packages/ssrwpo_uglifyjs2.js"
+  ],
   ...
 }
 ```

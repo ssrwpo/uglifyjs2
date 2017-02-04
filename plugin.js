@@ -11,6 +11,11 @@ const npmManifestFileName = './package.json';
 class UglifyJSMinifier {
   constructor() {
     this.packageDebug = false;
+    this.fileRemoval = [
+      'packages/ddp-server.js',
+      'packages/shell-server.js',
+      'packages/ssrwpo_uglifyjs2.js'
+    ];
     this.forceDevelopmentMinification = false;
     this.minifyOptions = {
       /* eslint-disable camelcase */
@@ -47,15 +52,14 @@ class UglifyJSMinifier {
     if (fs.lstatSync(npmManifestFileName).isFile()) {
       const npmManifest = JSON.parse(fs.readFileSync(npmManifestFileName, 'utf8'));
       if (npmManifest.uglifyjs2) {
-        const { development, deadCodes, options, packageDebug } = npmManifest.uglifyjs2;
+        const {
+          development, deadCodes, options, packageDebug, fileRemoval,
+        } = npmManifest.uglifyjs2;
         this.forceDevelopmentMinification = development || false;
         this.packageDebug = packageDebug || false;
-        if (deadCodes) {
-          this.deadCodes = deadCodes;
-        }
-        if (options) {
-          this.minifyOptions = Object.assign(this.minifyOptions, options);
-        }
+        if (fileRemoval) { this.fileRemoval = fileRemoval; }
+        if (deadCodes) { this.deadCodes = deadCodes; }
+        if (options) { this.minifyOptions = Object.assign(this.minifyOptions, options); }
       }
     }
     this.processFilesForBundle = this.processFilesForBundle.bind(this);
@@ -94,27 +98,22 @@ class UglifyJSMinifier {
     let allMinifiedJs = '';
     let allUnminifiedJs = '';
     files.forEach((file) => {
-      if (this.packageDebug) {
-        // let pkg = 'none';
-        // try {
-        //   pkg = file.getPackageName();
-        // } catch (err) {
-        //   console.log('err', err.toString());
-        // }
-        console.log(
-          'path', file.getPathInBundle(),
-          // 'arch', file.getArch(),
-          // 'package', pkg,
-          // 'content', file.getContentsAsString(),
-        );
-      }
-      // Don't reminify *.min.js.
-      if (/\.min\.js$/.test(file.getPathInBundle())) {
-        allMinifiedJs += file.getContentsAsString();
+      if (this.fileRemoval.includes(file.getPathInBundle())) {
+        if (this.packageDebug) {
+          console.log('file removed:', file.getPathInBundle());
+        }
       } else {
-        allUnminifiedJs += this.minify(file.getContentsAsString());
+        if (this.packageDebug) {
+          console.log('file added:', file.getPathInBundle());
+        }
+        // Don't reminify *.min.js.
+        if (/\.min\.js$/.test(file.getPathInBundle())) {
+          allMinifiedJs += file.getContentsAsString();
+        } else {
+          allUnminifiedJs += this.minify(file.getContentsAsString());
+        }
+        Plugin.nudge();
       }
-      Plugin.nudge();
     });
     const data = allMinifiedJs + allUnminifiedJs;
     if (data.length) {

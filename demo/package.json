@@ -14,7 +14,6 @@
   "license": "MIT",
   "uglifyjs2": {
     "deadCodes": ["Meteor.isServer", "ALERT"],
-    "fileRemoval": [],
     "packageDebug": true,
     "development": true,
     "options": {
