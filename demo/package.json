@@ -6,14 +6,19 @@
   },
   "dependencies": {
     "babel-runtime": "^6.22.0",
-    "meteor-node-stubs": "~0.2.5"
+    "meteor-node-stubs": "~0.2.5",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
   },
   "version": "1.0.0",
   "main": "index.js",
   "author": "Pierre-Eric Marchandet <pemarchandet@gmail.com> (http://pem-musing.blogspot.fr/)",
   "license": "MIT",
   "uglifyjs2": {
-    "deadCodes": ["Meteor.isServer", "ALERT"],
+    "deadCodes": [
+      "Meteor.isServer",
+      "ALERT"
+    ],
     "packageDebug": true,
     "development": true,
     "options": {
