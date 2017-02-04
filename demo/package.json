@@ -5,8 +5,8 @@
     "start": "meteor run"
   },
   "dependencies": {
-    "babel-runtime": "^6.20.0",
-    "meteor-node-stubs": "~0.2.0"
+    "babel-runtime": "^6.22.0",
+    "meteor-node-stubs": "~0.2.5"
   },
   "version": "1.0.0",
   "main": "index.js",
@@ -14,6 +14,8 @@
   "license": "MIT",
   "uglifyjs2": {
     "deadCodes": ["Meteor.isServer", "ALERT"],
+    "fileRemoval": [],
+    "packageDebug": true,
     "development": true,
     "options": {
       "fromString": true,

@@ -10,6 +10,7 @@ const npmManifestFileName = './package.json';
 
 class UglifyJSMinifier {
   constructor() {
+    this.packageDebug = false;
     this.forceDevelopmentMinification = false;
     this.minifyOptions = {
       /* eslint-disable camelcase */
@@ -46,8 +47,9 @@ class UglifyJSMinifier {
     if (fs.lstatSync(npmManifestFileName).isFile()) {
       const npmManifest = JSON.parse(fs.readFileSync(npmManifestFileName, 'utf8'));
       if (npmManifest.uglifyjs2) {
-        const { development, deadCodes, options } = npmManifest.uglifyjs2;
+        const { development, deadCodes, options, packageDebug } = npmManifest.uglifyjs2;
         this.forceDevelopmentMinification = development || false;
+        this.packageDebug = packageDebug || false;
         if (deadCodes) {
           this.deadCodes = deadCodes;
         }
@@ -92,6 +94,20 @@ class UglifyJSMinifier {
     let allMinifiedJs = '';
     let allUnminifiedJs = '';
     files.forEach((file) => {
+      if (this.packageDebug) {
+        // let pkg = 'none';
+        // try {
+        //   pkg = file.getPackageName();
+        // } catch (err) {
+        //   console.log('err', err.toString());
+        // }
+        console.log(
+          'path', file.getPathInBundle(),
+          // 'arch', file.getArch(),
+          // 'package', pkg,
+          // 'content', file.getContentsAsString(),
+        );
+      }
       // Don't reminify *.min.js.
       if (/\.min\.js$/.test(file.getPathInBundle())) {
         allMinifiedJs += file.getContentsAsString();

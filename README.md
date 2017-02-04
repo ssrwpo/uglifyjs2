@@ -17,6 +17,7 @@ The following default options are activated:
 ```js
 uglifyjs2: {
   deadCodes: ['Meteor.isServer'],
+  packageDebug: false,
   options: {
     fromString: true,
     compress: {
@@ -97,6 +98,19 @@ while in development mode:
 "uglifyjs2": {
   ...
   "development": true,
+  ...
+}
+```
+
+### Package debug options
+This adds some debug informations while processing production build. It helps
+tracking the files that will get included into the web bundle JS file.
+
+For activating it, simply add the `packageDebug` option in your `package.json`.
+```json
+"uglifyjs2": {
+  ...
+  "packageDebug": true,
   ...
 }
 ```
