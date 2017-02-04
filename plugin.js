@@ -1,6 +1,7 @@
 "use strict";
 
 import fs from 'fs';
+import process from 'process';
 import { Meteor } from 'meteor/meteor';
 
 // Package's name
@@ -16,6 +17,7 @@ class UglifyJSMinifier {
       'packages/shell-server.js',
       'packages/ssrwpo_uglifyjs2.js'
     ];
+    this.aggressive =  true;
     this.forceDevelopmentMinification = false;
     this.minifyOptions = {
       /* eslint-disable camelcase */
@@ -40,23 +42,28 @@ class UglifyJSMinifier {
         drop_console: true,
         keep_fargs: false,
         keep_fnames: false,
-        passes: 1,
+        passes: 2,
         global_defs: {
           UGLYFYJS_DEAD: false,
         },
       },
       /* eslint-enable */
     };
-    this.deadCodes = ['Meteor.isServer'];
+    this.deadCodes = [
+      '_meteor.Meteor.isServer',
+      'Meteor.isServer',
+      "process.env.NODE_ENV !== 'production'"
+    ];
     // Analyse user's package.json for package options
     if (fs.lstatSync(npmManifestFileName).isFile()) {
       const npmManifest = JSON.parse(fs.readFileSync(npmManifestFileName, 'utf8'));
       if (npmManifest.uglifyjs2) {
         const {
-          development, deadCodes, options, packageDebug, fileRemoval,
+          development, deadCodes, options, packageDebug, fileRemoval, aggressive,
         } = npmManifest.uglifyjs2;
         this.forceDevelopmentMinification = development || false;
         this.packageDebug = packageDebug || false;
+        if (aggressive) { this.aggressive = aggressive; }
         if (fileRemoval) { this.fileRemoval = fileRemoval; }
         if (deadCodes) { this.deadCodes = deadCodes; }
         if (options) { this.minifyOptions = Object.assign(this.minifyOptions, options); }
@@ -67,10 +74,13 @@ class UglifyJSMinifier {
   minify(content) {
     const pattern = new RegExp(this.deadCodes.join('|'), 'g');
     if (content.length) {
-      return UglifyJSMinify(
-        content.replace(pattern, 'UGLYFYJS_DEAD')
-        , this.minifyOptions
-      ).code;
+      const contentReplaced = content
+        .replace(pattern, 'UGLYFYJS_DEAD')
+        .replace(/process\.env\.NODE_ENV\ \!\=\=\ \'production\'/g, 'UGLYFYJS_DEAD');
+      if (this.packageDebug) {
+        console.log('** content before minification:\n', contentReplaced);
+      }
+      return UglifyJSMinify(contentReplaced, this.minifyOptions).code;
     }
     return '';
   }
@@ -92,30 +102,32 @@ class UglifyJSMinifier {
       });
       return;
     }
+    // Force production mode
+    process.env.NODE_ENV = "production";
     // Parse each file and create 2 accumlators:
     // * allMinifiedJs: A concatenation of all already minified file's content
     // * allUnminifiedJs: The unminified ones
     let allMinifiedJs = '';
     let allUnminifiedJs = '';
     files.forEach((file) => {
-      if (this.fileRemoval.includes(file.getPathInBundle())) {
-        if (this.packageDebug) {
-          console.log('file removed:', file.getPathInBundle());
-        }
+      const path = file.getPathInBundle();
+      if (this.fileRemoval.includes(path)) {
+        if (this.packageDebug) { console.log('file removed:', path); }
       } else {
-        if (this.packageDebug) {
-          console.log('file added:', file.getPathInBundle());
-        }
+        const content = file.getContentsAsString();
+        if (this.packageDebug) { console.log('file added:', path); }
         // Don't reminify *.min.js.
-        if (/\.min\.js$/.test(file.getPathInBundle())) {
-          allMinifiedJs += file.getContentsAsString();
+        if (/\.min\.js$/.test(path)) {
+          allMinifiedJs += content;
         } else {
-          allUnminifiedJs += this.minify(file.getContentsAsString());
+          allUnminifiedJs += this.aggressive ? content : this.minify(content);
         }
         Plugin.nudge();
       }
     });
-    const data = allMinifiedJs + allUnminifiedJs;
+    const data = this.aggressive
+      ? this.minify(allMinifiedJs + allUnminifiedJs)
+      : allMinifiedJs + allUnminifiedJs;
     if (data.length) {
       files[0].addJavaScript({ data });
     }

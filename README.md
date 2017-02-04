@@ -16,7 +16,10 @@ meteor add ssrwpo:uglifyjs2
 The following default options are activated:
 ```js
 uglifyjs2: {
-  deadCodes: ['Meteor.isServer'],
+  deadCodes: [
+    '_meteor.Meteor.isServer',
+    'Meteor.isServer'
+  ],
   fileRemoval: [
     'packages/ddp-server.js',
     'packages/shell-server.js',
@@ -138,6 +141,21 @@ tweak these removals using `fileRemoval` options in your `package.json`.
   ...
 }
 ```
+
+### Aggressive minification
+By default, minification is done file by file. Aggressive minification aggregates
+all files and then apply the minification allowing UglifyJS2 to go a little bit
+further in its optimization.
+
+Turned on by default, this option can be removed using the `aggressive` flag
+ in your `package.json`.
+ ```json
+ "uglifyjs2": {
+   ...
+   "aggressive": false,
+   ...
+ }
+ ```
 
 ## Tips
 * Start with a small project when choosing your options.

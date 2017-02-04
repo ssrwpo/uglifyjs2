@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Meteor } from 'meteor/meteor';
 
-const App = () => (
+const App = ({ msg }) => (
   <main>
-    <h1>Demo</h1>
-    <p>Simple demo</p>
+    <h1>{msg}</h1>
+    <p>{msg}</p>
   </main>
-)
+);
+App.propTypes = {
+  msg: PropTypes.string.isRequired,
+};
 
 Meteor.startup(() => {
-  ReactDOM.render(<App />, document.getElementById('react-root'));
+  ReactDOM.render(
+    <App msg="Simple demo"/>,
+    document.getElementById('react-root'),
+  );
 });
