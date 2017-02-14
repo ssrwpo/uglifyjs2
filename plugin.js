@@ -45,6 +45,7 @@ class UglifyJSMinifier {
         passes: 2,
         global_defs: {
           UGLYFYJS_DEAD: false,
+          _UGLYFYJS_DEAD: false,
         },
       },
       /* eslint-enable */
