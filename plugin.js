@@ -1,13 +1,8 @@
 "use strict";
 
-import fs from 'fs';
-import process from 'process';
-import { Meteor } from 'meteor/meteor';
-
 // Package's name
+// eslint-disable-next-line import/prefer-default-export
 export const name = 'ssrwpo:uglifyjs2';
-
-const npmManifestFileName = './package.json';
 
 class UglifyJSMinifier {
   constructor() {
@@ -15,9 +10,9 @@ class UglifyJSMinifier {
     this.fileRemoval = [
       'packages/ddp-server.js',
       'packages/shell-server.js',
-      'packages/ssrwpo_uglifyjs2.js'
+      'packages/ssrwpo_uglifyjs2.js',
     ];
-    this.aggressive =  true;
+    this.aggressive = true;
     this.forceDevelopmentMinification = false;
     this.minifyOptions = {
       /* eslint-disable camelcase */
@@ -53,22 +48,20 @@ class UglifyJSMinifier {
     this.deadCodes = [
       '_meteor.Meteor.isServer',
       'Meteor.isServer',
-      "process.env.NODE_ENV !== 'production'"
+      "process.env.NODE_ENV !== 'production'",
     ];
     // Analyse user's package.json for package options
-    if (fs.lstatSync(npmManifestFileName).isFile()) {
-      const npmManifest = JSON.parse(fs.readFileSync(npmManifestFileName, 'utf8'));
-      if (npmManifest.uglifyjs2) {
-        const {
-          development, deadCodes, options, packageDebug, fileRemoval, aggressive,
-        } = npmManifest.uglifyjs2;
-        this.forceDevelopmentMinification = development || false;
-        this.packageDebug = packageDebug || false;
-        if (aggressive) { this.aggressive = aggressive; }
-        if (fileRemoval) { this.fileRemoval = fileRemoval; }
-        if (deadCodes) { this.deadCodes = deadCodes; }
-        if (options) { this.minifyOptions = Object.assign(this.minifyOptions, options); }
-      }
+    const npmManifest = loadPackageJson();
+    if (npmManifest.uglifyjs2) {
+      const {
+        development, deadCodes, options, packageDebug, fileRemoval, aggressive,
+      } = npmManifest.uglifyjs2;
+      this.forceDevelopmentMinification = development || false;
+      this.packageDebug = packageDebug || false;
+      if (aggressive) { this.aggressive = aggressive; }
+      if (fileRemoval) { this.fileRemoval = fileRemoval; }
+      if (deadCodes) { this.deadCodes = deadCodes; }
+      if (options) { this.minifyOptions = Object.assign(this.minifyOptions, options); }
     }
     this.processFilesForBundle = this.processFilesForBundle.bind(this);
   }
@@ -77,8 +70,9 @@ class UglifyJSMinifier {
     if (content.length) {
       const contentReplaced = content
         .replace(pattern, 'UGLYFYJS_DEAD')
-        .replace(/process\.env\.NODE_ENV\ \!\=\=\ \'production\'/g, 'UGLYFYJS_DEAD');
+        .replace(/process.env.NODE_ENV !== 'production'/g, 'UGLYFYJS_DEAD');
       if (this.packageDebug) {
+        // eslint-disable-next-line no-console
         console.log('** content before minification:\n', contentReplaced);
       }
       return UglifyJSMinify(contentReplaced, this.minifyOptions).code;
@@ -97,7 +91,7 @@ class UglifyJSMinifier {
         file.addJavaScript({
           data,
           sourceMap: file.getSourceMap(),
-          path: file.getPathInBundle()
+          path: file.getPathInBundle(),
         });
         Plugin.nudge();
       });
@@ -113,10 +107,16 @@ class UglifyJSMinifier {
     files.forEach((file) => {
       const path = file.getPathInBundle();
       if (this.fileRemoval.includes(path)) {
-        if (this.packageDebug) { console.log('file removed:', path); }
+        if (this.packageDebug) {
+          // eslint-disable-next-line no-console
+          console.log('file removed:', path);
+        }
       } else {
         const content = file.getContentsAsString();
-        if (this.packageDebug) { console.log('file added:', path); }
+        if (this.packageDebug) {
+          // eslint-disable-next-line no-console
+          console.log('file added:', path);
+        }
         // Don't reminify *.min.js.
         if (/\.min\.js$/.test(path)) {
           allMinifiedJs += content;
@@ -138,5 +138,5 @@ class UglifyJSMinifier {
 // Export Meteor package
 Plugin.registerMinifier({
   extensions: ['js'],
-  archMatching: 'web'
+  archMatching: 'web',
 }, () => new UglifyJSMinifier());

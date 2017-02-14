@@ -1,0 +1,23 @@
+parser: babel-eslint
+env:
+  meteor: true
+globals:
+  UglifyJSMinify: true
+  loadPackageJson: true
+parserOptions:
+  ecmaFeatures:
+    classes: true
+    jsx: true
+plugins:
+  - class-property
+extends:
+  - eslint:recommended
+  - 'plugin:react/recommended'
+  - airbnb
+  - 'plugin:meteor/recommended'
+  - 'plugin:import/errors'
+  - 'plugin:import/warnings'
+rules:
+  # Removed or modified too strict rules
+  strict: 0
+  quotes: 0
