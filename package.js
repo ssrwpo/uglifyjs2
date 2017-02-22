@@ -9,7 +9,7 @@ Package.describe({
   documentation: 'README.md',
 });
 
-const pkgs = ['ecmascript', 'minifier-js', 'isobuild:minifier-plugin@1.0.0'];
+const pkgs = ['ecmascript', 'abernix:standard-minifier-js@1.2.16', 'isobuild:minifier-plugin@1.0.0'];
 
 Package.registerBuildPlugin({
   name,
