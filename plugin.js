@@ -12,7 +12,7 @@ class UglifyJSMinifier {
       'packages/shell-server.js',
       'packages/ssrwpo_uglifyjs2.js',
     ];
-    this.aggressive = true;
+    this.aggressive = false;
     this.forceDevelopmentMinification = false;
     this.minifyOptions = {
       /* eslint-disable camelcase */

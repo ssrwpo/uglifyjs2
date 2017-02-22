@@ -147,12 +147,12 @@ By default, minification is done file by file. Aggressive minification aggregate
 all files and then apply the minification allowing UglifyJS2 to go a little bit
 further in its optimization.
 
-Turned on by default, this option can be removed using the `aggressive` flag
+Turned off by default, this option can be added using the `aggressive` flag
  in your `package.json`.
  ```json
  "uglifyjs2": {
    ...
-   "aggressive": false,
+   "aggressive": true,
    ...
  }
  ```

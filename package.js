@@ -3,14 +3,13 @@
 const name = 'ssrwpo:uglifyjs2';
 Package.describe({
   name,
-  version: '0.4.0',
+  version: '0.5.0',
   summary: 'Meteor package that exposes options for UglifyJS2 JS minifier',
   git: 'https://github.com/ssr-server/uglifyjs2',
   documentation: 'README.md',
 });
 
-const pkgs = ['ecmascript', 'abernix:standard-minifier-js@1.2.16', 'isobuild:minifier-plugin@1.0.0'];
-
+const pkgs = ['ecmascript', 'minifier-js', 'isobuild:minifier-plugin@1.0.0'];
 Package.registerBuildPlugin({
   name,
   use: pkgs,
@@ -18,7 +17,7 @@ Package.registerBuildPlugin({
 });
 
 Package.onUse((api) => {
-  api.versionsFrom('1.4.2.6');
+  api.versionsFrom('1.4.2.7');
   api.use(pkgs, 'server');
   api.export('loadPackageJson', 'server');
 });
