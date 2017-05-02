@@ -1,9 +1,6 @@
 {
   "name": "demo",
   "private": true,
-  "scripts": {
-    "start": "meteor run"
-  },
   "dependencies": {
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-dead-code-elimination": "^2.2.2",
@@ -20,7 +17,8 @@
   "version": "1.0.0",
   "author": "Pierre-Eric Marchandet <pemarchandet@gmail.com> (http://pem-musing.blogspot.fr/)",
   "scripts": {
-    "start": "meteor"
+    "dev": "METEOR_PACKAGE_DIRS=../src meteor",
+    "prod": "METEOR_PACKAGE_DIRS=../src meteor --production"
   },
   "license": "MIT",
   "uglifyjs2": {

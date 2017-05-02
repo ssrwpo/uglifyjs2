@@ -170,7 +170,10 @@ At the root of the repository:
 yarn install
 cd demo
 yarn install
-yarn start
+# Launch the demo in development mode
+yarn dev
+# Launch the demo in production mode
+yarn prod
 ```
 
 ## Tips

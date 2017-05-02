@@ -2,8 +2,9 @@ parser: babel-eslint
 env:
   meteor: true
 globals:
-  UglifyJSMinify: true
+  Babel: true
   loadPackageJson: true
+  meteorJsMinify: true
 parserOptions:
   ecmaFeatures:
     classes: true
@@ -21,6 +22,7 @@ rules:
   # Removed or modified too strict rules
   strict: 0
   quotes: 0
+  func-names: 0
   meteor/audit-argument-checks: 0
   meteor/no-session: 0
   meteor/no-template-lifecycle-assignments: 0

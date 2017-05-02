@@ -1,3 +1,5 @@
+"use strict";
+
 const fs = Plugin.fs;
 const path = Plugin.path;
 

@@ -9,7 +9,7 @@ Package.describe({
   documentation: 'README.md',
 });
 
-const pkgs = ['ecmascript', 'minifier-js', 'isobuild:minifier-plugin@1.0.0'];
+const pkgs = ['ecmascript', 'ssrwpo:minifierjs@2.0.0', 'isobuild:minifier-plugin@1.0.0'];
 Package.registerBuildPlugin({
   name,
   use: pkgs,
@@ -17,7 +17,7 @@ Package.registerBuildPlugin({
 });
 
 Package.onUse((api) => {
-  api.versionsFrom('1.4.2.7');
+  api.versionsFrom('1.4.4.1');
   api.use(pkgs, 'server');
   api.export('loadPackageJson', 'server');
 });

@@ -75,7 +75,7 @@ class UglifyJSMinifier {
         // eslint-disable-next-line no-console
         console.log('** content before minification:\n', contentReplaced);
       }
-      return UglifyJSMinify(contentReplaced, this.minifyOptions).code;
+      return meteorJsMinify(contentReplaced, this.minifyOptions).code;
     }
     return '';
   }
