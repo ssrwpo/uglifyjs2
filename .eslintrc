@@ -21,3 +21,9 @@ rules:
   # Removed or modified too strict rules
   strict: 0
   quotes: 0
+  meteor/audit-argument-checks: 0
+  meteor/no-session: 0
+  meteor/no-template-lifecycle-assignments: 0
+  meteor/no-zero-timeout: 0
+  meteor/eventmap-params: 0
+  meteor/template-names: 0
