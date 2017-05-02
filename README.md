@@ -162,6 +162,17 @@ Turned off by default, this option can be added using the `aggressive` flag
 This package exports a function `loadPackageJson` that parses the content
 of then NPM's `package.json` file of a Meteor project.
 
+### Dependencies & demo project
+
+At the root of the repository:
+
+```sh
+yarn install
+cd demo
+yarn install
+yarn start
+```
+
 ## Tips
 * My build process is stucked at "Minifying app code": `meteor reset`.
 * Start with a small project when choosing your options.

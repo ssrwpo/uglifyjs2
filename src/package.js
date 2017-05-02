@@ -3,7 +3,7 @@
 const name = 'ssrwpo:uglifyjs2';
 Package.describe({
   name,
-  version: '0.5.0',
+  version: '0.6.0',
   summary: 'Meteor package that exposes options for UglifyJS2 JS minifier',
   git: 'https://github.com/ssr-server/uglifyjs2',
   documentation: 'README.md',
