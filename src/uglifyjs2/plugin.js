@@ -52,7 +52,7 @@ class UglifyJSMinifier {
     ];
     // Analyse user's package.json for package options
     const npmManifest = loadPackageJson();
-    if (npmManifest.uglifyjs2) {
+    if (npmManifest && npmManifest.uglifyjs2) {
       const {
         development, deadCodes, options, packageDebug, fileRemoval, aggressive,
       } = npmManifest.uglifyjs2;
