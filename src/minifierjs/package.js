@@ -13,7 +13,7 @@ Npm.depends({
 });
 
 Package.onUse((api) => {
-  api.use(['ecmascript', 'babel-compiler']);
+  api.use(['ecmascript@0.7.3', 'babel-compiler@6.18.2']);
   api.export(['meteorJsMinify']);
   api.addFiles(['minifier.js'], 'server');
 });
