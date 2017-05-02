@@ -4,6 +4,8 @@ Package.describe({
   name: 'ssrwpo:minifierjs',
   summary: 'JavaScript minifier',
   version: '2.0.0',
+  git: 'https://github.com/ssr-server/uglifyjs2',
+  documentation: 'README.md',
 });
 
 Npm.depends({
